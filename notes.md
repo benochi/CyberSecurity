@@ -148,4 +148,8 @@ add a and first 1, ex: Cookie: TrackingId=4KuVlET3kPLQfehN'||(SELECT CASE WHEN S
 Cluster bomb attack (two payloads)
 payload 1 numbers 1-20 step 1, payload 2 a-z 0-9
 look for any 500s and we'll get the password from internal server error. 500 = valid character
-pw for me is:
+pw for me is: 0ox8ymrn3mncq880m5uh
+
+### Lab: Blind SQL injection with time delays
+
+hint: You can find some useful payloads on our SQL injection cheat sheet.
